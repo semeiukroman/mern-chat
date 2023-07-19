@@ -1,0 +1,10 @@
+api/.env
+client/.env
+.idea
+api/node_modules
+client/node_modules
+api/uploads/*
+/node_modules
+package.json
+package-lock.json
+yarn.lock
