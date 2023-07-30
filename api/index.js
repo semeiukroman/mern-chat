@@ -94,7 +94,7 @@ const wss = new ws.WebSocketServer({ server });
 wss.on('connection', (connection, req) => {
     const cookies = req.headers.cookie;
     if (cookies) {
-        tokenCookieString = cookies.split(';').find(str => str.startsWith('token='));
+        const tokenCookieString = cookies.split(';').find(str => str.startsWith('token='));
         if (tokenCookieString) {
             const token = tokenCookieString.split('=')[1];
             if (token) {
@@ -107,4 +107,10 @@ wss.on('connection', (connection, req) => {
             }
         }
     }
-})
+
+    [...wss.clients].forEach(client => {
+        client.send(JSON.stringify({
+            online: [...wss.clients].map(c => ({ userId: c.userId, username: c.username })),
+        }));
+    });
+});
